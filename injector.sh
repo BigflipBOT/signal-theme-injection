@@ -1,13 +1,14 @@
 #!/bin/bash
 
-TEMP=$(mktemp -d)
-SIGNAL_DIR="/usr/lib/signal-desktop/resources"
-NAME=$1
+temp=$(mktemp -d)
+signal_dir="/usr/lib/signal-desktop/resources"
+path=$1
+name=$(basename ${path})
 
-asar e "${SIGNAL_DIR}/app.asar" ${TEMP}
+asar e "${signal_dir}/app.asar" ${temp}
 
-cp ${NAME} "${TEMP}/stylesheets/$(basename ${NAME})" 
+cp ${path} "${temp}/stylesheets/${name}" 
 
-sed -i "1i @import \"${NAME}\";" "${TEMP}/stylesheets/manifest.css"
+sed -i "2i @import \"${name}\";" "${temp}/stylesheets/manifest.css"
 
-sudo asar p ${TEMP} "${SIGNAL_DIR}/app.asar"
+sudo asar p ${temp} "${signal_dir}/app.asar"
